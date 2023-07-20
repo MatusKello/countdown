@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import { Box, Button, Card, TextField, Typography } from '@mui/material';
+import { useState, useEffect } from 'react';
 
-function App() {
+const App = () => {
+  const [value, setValue] = useState(0);
+  const [countdown, setCountdown] = useState(0);
+
+  const handleStart = () => {
+    setCountdown(value);
+    setValue(0);
+  };
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown((prevCountDown) => prevCountDown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Card
+      sx={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        flexGrow: 1,
+        maxWidth: '800px',
+        margin: '10rem auto',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <TextField
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          variant='filled'
+          type='number'
+        />
+        <Button onClick={handleStart} variant='outlined'>
+          Start countdown
+        </Button>
+        <Typography variant='h2'>{countdown}</Typography>
+      </Box>
+    </Card>
   );
-}
+};
 
 export default App;
